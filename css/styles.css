@@ -499,3 +499,265 @@ body {
     display: none;
 }
 
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+    .nav {
+        padding: 20px 32px;
+    }
+
+    .projects-section,
+    .adanne-feature,
+    .about-section,
+    .news-page,
+    .footer {
+        padding: 100px 32px;
+    }
+
+    .section-title,
+    .news-title {
+        font-size: 40px;
+    }
+
+    .hero-title {
+        font-size: 72px;
+    }
+
+    .projects-grid {
+        gap: 16px;
+    }
+
+    .project-card {
+        height: 380px;
+    }
+
+    .about-text {
+        padding-right: 0;
+    }
+
+    .about-headline {
+        font-size: 56px;
+    }
+
+    .about-image {
+        height: 480px;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav {
+        padding: 16px 24px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .nav-links {
+        gap: 16px;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+    }
+
+    .hero {
+        height: 60vh;
+        margin-top: 64px;
+    }
+
+    .hero-title {
+        font-size: 56px;
+        letter-spacing: -1px;
+    }
+
+    .hero-subtitle {
+        font-size: 14px;
+        letter-spacing: 2px;
+    }
+
+    .projects-section,
+    .adanne-feature,
+    .about-section,
+    .news-page,
+    .footer {
+        padding: 80px 24px;
+    }
+
+    .section-title,
+    .news-title {
+        font-size: 32px;
+        margin-bottom: 48px;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .project-card {
+        height: 320px;
+    }
+
+    .project-title {
+        font-size: 28px;
+    }
+
+    .project-role {
+        font-size: 12px;
+        letter-spacing: 1.5px;
+    }
+
+    .adanne-content {
+        padding-left: 32px;
+    }
+
+    .adanne-quote {
+        font-size: 48px;
+    }
+
+    .adanne-description,
+    .about-manifesto,
+    .article-preview,
+    .article-content p {
+        font-size: 16px;
+    }
+
+    .about-section {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .about-headline {
+        font-size: 48px;
+    }
+
+    .about-pullquote {
+        font-size: 24px;
+        margin: 32px 0;
+    }
+
+    .about-image {
+        height: 420px;
+    }
+
+    .cta-button {
+        padding: 16px 40px;
+        font-size: 14px;
+    }
+
+    .article-card {
+        padding: 36px;
+    }
+
+    .article-headline {
+        font-size: 28px;
+    }
+
+    .article-indicator {
+        font-size: 12px;
+        letter-spacing: 1.5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav {
+        padding: 12px 20px;
+    }
+
+    .logo {
+        font-size: 18px;
+        letter-spacing: 0;
+    }
+
+    .nav-links {
+        gap: 12px;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+    }
+
+    .hero {
+        height: 55vh;
+    }
+
+    .hero-title {
+        font-size: 42px;
+        margin-bottom: 12px;
+    }
+
+    .hero-subtitle {
+        font-size: 12px;
+        letter-spacing: 1.5px;
+    }
+
+    .scroll-indicator {
+        font-size: 12px;
+        letter-spacing: 1.5px;
+    }
+
+    .projects-section,
+    .adanne-feature,
+    .about-section,
+    .news-page,
+    .footer {
+        padding: 64px 20px;
+    }
+
+    .project-card {
+        height: 260px;
+    }
+
+    .project-title {
+        font-size: 24px;
+    }
+
+    .project-role {
+        font-size: 11px;
+        letter-spacing: 1.2px;
+    }
+
+    .adanne-content {
+        padding-left: 24px;
+    }
+
+    .adanne-quote {
+        font-size: 36px;
+    }
+
+    .about-headline {
+        font-size: 36px;
+    }
+
+    .about-image {
+        height: 320px;
+    }
+
+    .footer {
+        text-align: center;
+    }
+
+    .cta-button {
+        width: 100%;
+        padding: 14px 24px;
+    }
+
+    .social-links {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .article-card {
+        padding: 28px;
+    }
+
+    .article-headline {
+        font-size: 24px;
+    }
+
+    .article-preview,
+    .article-content p {
+        font-size: 15px;
+    }
+}
+
