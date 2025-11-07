@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adanne - MelonHouse Productions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="logo" onclick="showHome()">MelonHouse Productions</div>
+        <div class="nav-links">
+            <a onclick="showNews()">News</a>
+            <a href="#contact">Contact Us </a>
+        </div>
+    </nav>
+
+    <!-- Main Page Content -->
+    <div class="page-content" id="mainContent">
+        <!-- Hero Section -->
+        <section class="hero">
+            <img src="https://storage.googleapis.com/forge-sites/6c8ce39cd5c80457622e565e8b4dda7a2dff689aa575df1fef41ee9777cc18f4.webp?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=164061697651-compute%40developer.gserviceaccount.com%2F20251107%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20251107T014939Z&X-Goog-Expires=86400&X-Goog-SignedHeaders=host&response-access-control-allow-origin=https%3A%2F%2Fforge-staging.moonchild.ai&X-Goog-Signature=4c5a66cdf3518fc96f8d90917d1d1de5d9fa09891773cbbd7f9fdc1d7cd310da5e9e32de28e99bb83f5b778d3d71b6da035dbc0123a624463274120cfc437c003551ccb061dce851b6bb54f16e8f640fdaed8e48e7d34baa3eee68bcc3e62ebac7ac53d4625081bc31141fe9465cdd9e6d778f8dbc0d50caf209ac5b4980444dab6b633885998f0d56a085817de79538ebd838e16ccf51acd79d202d21926fa820645fd685b71d2b3ac011e370c004c475765af7fe9981e9cc93d9aa567a593416901d995823f79f3bd3045eb0c2386c9a57c0762adc37bcfa7ce1c366c31ecc68ba072d94eccc2a1a4f016180c5cfe11bc9ed4057a51893c2f890671deba7cf" alt="Two Black women facing each other in dramatic profile with side lighting illuminating each face, creating sculptural shadows and warm skin tones against deep black background, with perfect symmetrical composition and negative space in center for title placement" class="hero-image">
+            <div class="hero-content">
+                <h1 class="hero-title">ADANNE</h1>
+                <p class="hero-subtitle">Coming Soon</p>
+            </div>
+            <div class="scroll-indicator">Scroll</div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="projects-section">
+            <h2 class="section-title">Selected Works</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <img src="images/art-not-fashion-2022.png" alt="Art Not Fashion (2022) - minimalist white background with black text" class="project-image">
+                    <div class="project-overlay">
+                        <h3 class="project-title">Art Not Fashion (2022)</h3>
+                        <p class="project-role">2022</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="images/bood-up-2022.png" alt="BOO'D UP (2022) - intimate bar scene with romantic lighting" class="project-image">
+                    <div class="project-overlay">
+                        <h3 class="project-title">BOO'D UP (2022)</h3>
+                        <p class="project-role">2022</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Adanne Module -->
+        <section class="adanne-feature">
+            <div class="adanne-content">
+                <span class="coming-soon-tag">Coming Soon</span>
+                <h2 class="adanne-quote">"A story of resilience, identity, and the unbreakable bonds of family."</h2>
+                <p class="adanne-description">
+                    Adanne follows a young woman's journey through displacement and discovery, weaving together themes of cultural heritage, personal transformation, and the search for belonging in a changing world. Currently in post-production.
+                </p>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section">
+            <div class="about-text">
+                <h2 class="about-headline">12 Productions. One Vision.</h2>
+                <p class="about-manifesto">
+                    Independent cinema is not just about telling stories—it's about capturing truth in its most raw and unfiltered form. Through documentary, narrative, and experimental work, we explore the human condition with honesty and visual poetry.
+                </p>
+                <p class="about-manifesto">
+                    Every frame is a deliberate choice. Every cut matters. Every story deserves to be told with integrity and artistic courage.
+                </p>
+                <blockquote class="about-pullquote">
+                    "Cinema should disturb, inspire, and leave an indelible mark on the soul."
+                </blockquote>
+            </div>
+            <div class="about-image-container">
+                <img src="https://storage.googleapis.com/forge-sites/bda174d7e49e9650744356ee48326b642c68714b4fe97f329fa923f3889ac8d8.webp?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=164061697651-compute%40developer.gserviceaccount.com%2F20251107%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20251107T013258Z&X-Goog-Expires=86400&X-Goog-SignedHeaders=host&response-access-control-allow-origin=https%3A%2F%2Fforge-staging.moonchild.ai&X-Goog-Signature=b1a9b5e0dbcca9e3eaa418187687b3743762ad4012791514a8c268dbc00bf5d24d13e0454a74f1173ff62a266d6547ef422d15ccf3e02708d97d6110dbfa40922f2deb588e53e4e156a8f4dd7ecf73351aba51db1e97c447158b8cba33e01a015e0e4755ed7ced56db4b011c134ca5205691d350c5495fa23273c60b421b1289e9e187056c5c301ceab9efb924f3779529c22c8f102659839ba76fc04562b4227f535424dc9aee40ee053f5e05f37ba14314c4214ad5cda416a2ec29de9c5c095ca7226e1373dd107b234f567be52034d1159be4ad2f0f2b1fc5078fe628ce048e8e24eae064c989529855ed7aa89f2756549a34a1dab01112578210fab06cea" alt="Filmmaker directing on set in an atmospheric production environment with cinematic lighting" class="about-image">
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <a href="#contact" class="cta-button">Let's Collaborate</a>
+            <div class="social-links">
+                <a href="#">Instagram</a>
+                <a href="#">Vimeo</a>
+                <a href="#">Email</a>
+            </div>
+            <p class="footer-credits">© 2024 MelonHouse Productions. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- News Page -->
+    <div class="news-page" id="newsPage">
+        <h1 class="news-title">Latest News</h1>
+        <div class="news-articles" id="newsArticles">
+            <!-- News articles will be dynamically loaded here -->
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <a href="#contact" class="cta-button">Let's Collaborate</a>
+            <div class="social-links">
+                <a href="#">Instagram</a>
+                <a href="#">Vimeo</a>
+                <a href="#">Email</a>
+            </div>
+            <p class="footer-credits">© 2024 MelonHouse Productions. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="js/news-data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+
