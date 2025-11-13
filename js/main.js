@@ -28,12 +28,18 @@ function showHome() {
 // Handle browser back/forward buttons
 window.addEventListener('popstate', function(event) {
     const path = window.location.pathname;
-    if (path.includes('/news')) {
-        const pathParts = path.split('/');
+    let normalizedPath = path;
+    if (normalizedPath.includes('index.html')) {
+        normalizedPath = normalizedPath.replace(/index\.html/g, '');
+    }
+    normalizedPath = normalizedPath.replace(/\/$/, '');
+    
+    if (normalizedPath.includes('/news')) {
+        const pathParts = normalizedPath.split('/').filter(p => p);
         const lastPart = pathParts[pathParts.length - 1];
         
         // Check if it's a specific article or news list
-        if (lastPart && lastPart !== 'news' && lastPart !== 'index.html') {
+        if (lastPart && lastPart !== 'news' && lastPart !== 'index.html' && lastPart !== '') {
             // It's an article slug
             if (window.showNewsArticle) {
                 window.showNewsArticle(lastPart);

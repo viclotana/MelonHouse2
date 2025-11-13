@@ -130,13 +130,26 @@ async function initializeNews() {
     // Check URL path for news routing
     const path = window.location.pathname;
     const hash = window.location.hash;
+    const fullPath = window.location.href;
     
-    console.log('Initial path:', path, 'hash:', hash);
+    console.log('Initial path:', path, 'hash:', hash, 'fullPath:', fullPath);
+    
+    // Normalize path - handle both /news and /index.html/news
+    let normalizedPath = path;
+    if (normalizedPath.includes('index.html')) {
+        normalizedPath = normalizedPath.replace(/index\.html/g, '');
+    }
+    // Remove trailing slash
+    normalizedPath = normalizedPath.replace(/\/$/, '');
+    
+    console.log('Normalized path:', normalizedPath);
     
     // Handle clean URLs (index.html/news or /news)
-    if (path.includes('/news')) {
-        const pathParts = path.split('/');
+    if (normalizedPath.includes('/news')) {
+        const pathParts = normalizedPath.split('/').filter(p => p); // Remove empty parts
         const lastPart = pathParts[pathParts.length - 1];
+        
+        console.log('Path parts:', pathParts, 'Last part:', lastPart);
         
         // Check if it's a specific article or news list
         if (lastPart && lastPart !== 'news' && lastPart !== 'index.html' && lastPart !== '') {
@@ -157,6 +170,12 @@ async function initializeNews() {
     } else if (hash === '#news') {
         console.log('Showing news list from hash');
         showNewsList();
+    } else {
+        // Default: show home page
+        console.log('Showing home page');
+        document.getElementById('mainContent').classList.remove('hidden');
+        document.getElementById('newsPage').classList.remove('active');
+        document.getElementById('newsArticlePage').classList.remove('active');
     }
     
     // Listen for hash changes (fallback)
