@@ -27,5 +27,3 @@ Adanne is currently set for production in November 2025.
 📩 hello@melonhouse.co
 
 📱 IG @melonhouseproduction
-
-[An Internal Link](/guides/content/editing-an-existing-page)
