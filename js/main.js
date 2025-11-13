@@ -29,23 +29,37 @@ function showHome() {
 window.addEventListener('popstate', function(event) {
     const path = window.location.pathname;
     let normalizedPath = path;
+    
+    // Remove index.html from path
     if (normalizedPath.includes('index.html')) {
         normalizedPath = normalizedPath.replace(/index\.html/g, '');
     }
+    
+    // Remove trailing slash
     normalizedPath = normalizedPath.replace(/\/$/, '');
     
-    if (normalizedPath.includes('/news')) {
-        const pathParts = normalizedPath.split('/').filter(p => p);
-        const lastPart = pathParts[pathParts.length - 1];
+    // Remove leading slash for easier parsing
+    normalizedPath = normalizedPath.replace(/^\//, '');
+    
+    if (normalizedPath.includes('news')) {
+        const pathParts = normalizedPath.split('/').filter(p => p && p !== 'index.html');
+        const newsIndex = pathParts.indexOf('news');
         
-        // Check if it's a specific article or news list
-        if (lastPart && lastPart !== 'news' && lastPart !== 'index.html' && lastPart !== '') {
-            // It's an article slug
-            if (window.showNewsArticle) {
-                window.showNewsArticle(lastPart);
+        if (newsIndex !== -1) {
+            // Check if there's a slug after 'news'
+            if (pathParts.length > newsIndex + 1) {
+                // It's an article slug
+                const slug = pathParts[newsIndex + 1];
+                if (window.showNewsArticle) {
+                    window.showNewsArticle(slug);
+                }
+            } else {
+                // It's the news list
+                if (window.showNewsList) {
+                    window.showNewsList();
+                }
             }
         } else {
-            // It's the news list
             if (window.showNewsList) {
                 window.showNewsList();
             }

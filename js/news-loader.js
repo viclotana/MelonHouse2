@@ -134,31 +134,52 @@ async function initializeNews() {
     
     console.log('Initial path:', path, 'hash:', hash, 'fullPath:', fullPath);
     
-    // Normalize path - handle both /news and /index.html/news
+    // Normalize path - handle both /news and /index.html/news and child routes
     let normalizedPath = path;
+    
+    // Handle different path formats:
+    // - /news/slug
+    // - /index.html/news/slug
+    // - /Melon/news/slug (if in a subdirectory)
+    // - news/slug (relative)
+    
+    // Remove index.html from path
     if (normalizedPath.includes('index.html')) {
         normalizedPath = normalizedPath.replace(/index\.html/g, '');
     }
+    
     // Remove trailing slash
     normalizedPath = normalizedPath.replace(/\/$/, '');
     
+    // Remove leading slash for easier parsing
+    normalizedPath = normalizedPath.replace(/^\//, '');
+    
     console.log('Normalized path:', normalizedPath);
     
-    // Handle clean URLs (index.html/news or /news)
-    if (normalizedPath.includes('/news')) {
-        const pathParts = normalizedPath.split('/').filter(p => p); // Remove empty parts
-        const lastPart = pathParts[pathParts.length - 1];
+    // Handle clean URLs - check if path contains 'news'
+    if (normalizedPath.includes('news')) {
+        const pathParts = normalizedPath.split('/').filter(p => p && p !== 'index.html'); // Remove empty parts and index.html
         
-        console.log('Path parts:', pathParts, 'Last part:', lastPart);
+        console.log('Path parts after filtering:', pathParts);
         
-        // Check if it's a specific article or news list
-        if (lastPart && lastPart !== 'news' && lastPart !== 'index.html' && lastPart !== '') {
-            // It's an article slug
-            console.log('Loading article from path:', lastPart);
-            await showNewsArticle(lastPart);
+        // Find the index of 'news' in the path
+        const newsIndex = pathParts.indexOf('news');
+        
+        if (newsIndex !== -1) {
+            // Check if there's a slug after 'news'
+            if (pathParts.length > newsIndex + 1) {
+                // There's a slug after 'news' - it's an article
+                const slug = pathParts[newsIndex + 1];
+                console.log('Loading article from path, slug:', slug);
+                await showNewsArticle(slug);
+            } else {
+                // 'news' is the last part - it's the news list
+                console.log('Showing news list from path');
+                showNewsList();
+            }
         } else {
-            // It's the news list
-            console.log('Showing news list from path');
+            // 'news' not found in path parts, but was in normalizedPath - might be edge case
+            console.log('Edge case: news in path but not in parts, showing list');
             showNewsList();
         }
     } 
