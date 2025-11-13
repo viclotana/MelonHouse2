@@ -69,8 +69,7 @@ async function loadNewsArticle(slug) {
 async function loadAllNewsArticles() {
     // List of news article slugs (you can add more here as you create new MD files)
     const slugs = [
-        'bood-up-sundance-selection',
-        'art-not-fashion-exhibition'
+        'melon-house-production-adanne-press-release'
     ];
     
     const articles = [];
@@ -97,17 +96,35 @@ async function initializeNews() {
     console.log(`Loaded ${newsArticles.length} news articles:`, newsArticles);
     window.newsArticles = newsArticles; // Make available globally
     
-    // Load news list or individual article based on URL hash
+    // Check URL path for news routing
+    const path = window.location.pathname;
     const hash = window.location.hash;
-    console.log('Initial hash:', hash);
-    if (hash.startsWith('#news/')) {
+    
+    console.log('Initial path:', path, 'hash:', hash);
+    
+    // Handle clean URLs (index.html/news or /news)
+    if (path.includes('/news')) {
+        const pathParts = path.split('/');
+        const lastPart = pathParts[pathParts.length - 1];
+        
+        // Check if it's a specific article or news list
+        if (lastPart && lastPart !== 'news' && lastPart !== 'index.html') {
+            // It's an article slug
+            showNewsArticle(lastPart);
+        } else {
+            // It's the news list
+            showNewsList();
+        }
+    } 
+    // Fallback to hash-based routing
+    else if (hash.startsWith('#news/')) {
         const slug = hash.substring(6); // Remove '#news/'
         showNewsArticle(slug);
     } else if (hash === '#news') {
         showNewsList();
     }
     
-    // Listen for hash changes
+    // Listen for hash changes (fallback)
     window.addEventListener('hashchange', () => {
         const hash = window.location.hash;
         console.log('Hash changed to:', hash);
@@ -149,7 +166,13 @@ function showNewsList() {
         const articleCard = document.createElement('div');
         articleCard.className = 'article-card';
         articleCard.onclick = () => {
-            window.location.hash = `#news/${article.slug}`;
+            // Use History API for clean URLs
+            if (window.history && window.history.pushState) {
+                window.history.pushState({page: 'news-article', slug: article.slug}, '', `news/${article.slug}`);
+            } else {
+                window.location.hash = `#news/${article.slug}`;
+            }
+            showNewsArticle(article.slug);
         };
         
         articleCard.innerHTML = `
@@ -167,6 +190,10 @@ function showNewsList() {
     window.scrollTo(0, 0);
 }
 
+// Make functions available globally
+window.showNewsList = showNewsList;
+window.showNewsArticle = showNewsArticle;
+
 // Show individual news article
 async function showNewsArticle(slug) {
     document.getElementById('mainContent').classList.add('hidden');
@@ -183,9 +210,9 @@ async function showNewsArticle(slug) {
     const articleContainer = document.getElementById('newsArticleContent');
     if (!articleContainer) return;
     
-    articleContainer.innerHTML = `
+        articleContainer.innerHTML = `
         <div class="article-back">
-            <a href="#news" class="back-link">← Back to News</a>
+            <a href="news" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'news'}, '', 'news'); } else { window.location.hash = '#news'; } showNewsList(); return false;">← Back to News</a>
         </div>
         <div class="article-date">${article.date}</div>
         <h1 class="article-headline-full">${article.headline}</h1>

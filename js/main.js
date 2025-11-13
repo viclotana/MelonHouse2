@@ -1,17 +1,55 @@
 // Navigation Functions
 function showNews() {
-    window.location.hash = '#news';
+    // Use History API for clean URLs
+    if (window.history && window.history.pushState) {
+        window.history.pushState({page: 'news'}, '', 'news');
+    } else {
+        window.location.hash = '#news';
+    }
+    // Trigger news display
+    if (window.showNewsList) {
+        window.showNewsList();
+    }
 }
 
 function showHome() {
-    window.location.hash = '';
+    // Use History API for clean URLs
+    if (window.history && window.history.pushState) {
+        window.history.pushState({page: 'home'}, '', window.location.pathname.replace('/news', ''));
+    } else {
+        window.location.hash = '';
+    }
     document.getElementById('mainContent').classList.remove('hidden');
     document.getElementById('newsPage').classList.remove('active');
     document.getElementById('newsArticlePage').classList.remove('active');
     window.scrollTo(0, 0);
 }
 
-// Handle hash changes for navigation
+// Handle browser back/forward buttons
+window.addEventListener('popstate', function(event) {
+    const path = window.location.pathname;
+    if (path.includes('/news')) {
+        const pathParts = path.split('/');
+        const lastPart = pathParts[pathParts.length - 1];
+        
+        // Check if it's a specific article or news list
+        if (lastPart && lastPart !== 'news' && lastPart !== 'index.html') {
+            // It's an article slug
+            if (window.showNewsArticle) {
+                window.showNewsArticle(lastPart);
+            }
+        } else {
+            // It's the news list
+            if (window.showNewsList) {
+                window.showNewsList();
+            }
+        }
+    } else {
+        showHome();
+    }
+});
+
+// Handle hash changes for navigation (fallback)
 window.addEventListener('hashchange', function() {
     const hash = window.location.hash;
     if (hash === '' || hash === '#') {
