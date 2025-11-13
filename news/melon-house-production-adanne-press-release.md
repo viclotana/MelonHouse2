@@ -5,7 +5,7 @@ slug: "melon-house-production-adanne-press-release"
 preview: "Melon House Production is thrilled to announce ADANNE, a sweeping emotional drama poised for the global festival circuit. Written and Produced by Gold Gerry and directed by Orobosa Ikponmwen, the film offers a profound exploration of motherhood, identity, and the unspoken histories passed down through women."
 ---
 
-Lagos, Nigeria — 13th November 2025 — Melon House Production is thrilled to announce ADANNE, a sweeping emotional drama poised for the global festival circuit. Written and Produced by [Gold Gerry](https://www.imdb.com/name/nm13622353/) and directed by [Orobosa Ikponmwen](https://www.imdb.com/name/nm14759136/), the film offers a profound exploration of motherhood, identity, and the unspoken histories passed down through women.
+Lagos, Nigeria — 13th November 2025 — Melon House Production is thrilled to announce ADANNE, an emotional drama poised for the festival circuit. Written and Produced by [Gold Gerry](https://www.imdb.com/name/nm13622353/) and directed by [Orobosa Ikponmwen](https://www.imdb.com/name/nm14759136/), the film offers a profound exploration of motherhood, identity, and the unspoken histories passed down through women.
 
 ** LOGLINE: ** Three generations of Igbo women battle with love, duty, and family tension as Adanne, caught between youthful creativity and oppressive expectations, fights to claim her own identity and reshape the legacy of her lineage.
 
