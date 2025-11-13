@@ -96,6 +96,10 @@ async function initializeNews() {
     console.log(`Loaded ${newsArticles.length} news articles:`, newsArticles);
     window.newsArticles = newsArticles; // Make available globally
     
+    // Make sure functions are available before routing
+    window.showNewsList = showNewsList;
+    window.showNewsArticle = showNewsArticle;
+    
     // Check URL path for news routing
     const path = window.location.pathname;
     const hash = window.location.hash;
@@ -108,19 +112,23 @@ async function initializeNews() {
         const lastPart = pathParts[pathParts.length - 1];
         
         // Check if it's a specific article or news list
-        if (lastPart && lastPart !== 'news' && lastPart !== 'index.html') {
+        if (lastPart && lastPart !== 'news' && lastPart !== 'index.html' && lastPart !== '') {
             // It's an article slug
-            showNewsArticle(lastPart);
+            console.log('Loading article from path:', lastPart);
+            await showNewsArticle(lastPart);
         } else {
             // It's the news list
+            console.log('Showing news list from path');
             showNewsList();
         }
     } 
     // Fallback to hash-based routing
     else if (hash.startsWith('#news/')) {
         const slug = hash.substring(6); // Remove '#news/'
-        showNewsArticle(slug);
+        console.log('Loading article from hash:', slug);
+        await showNewsArticle(slug);
     } else if (hash === '#news') {
+        console.log('Showing news list from hash');
         showNewsList();
     }
     
@@ -169,23 +177,6 @@ function showNewsList() {
         // Store slug in data attribute for reference
         articleCard.setAttribute('data-slug', article.slug);
         
-        articleCard.onclick = async (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const slug = article.slug;
-            console.log('Article clicked:', slug);
-            
-            // Use History API for clean URLs
-            if (window.history && window.history.pushState) {
-                window.history.pushState({page: 'news-article', slug: slug}, '', `news/${slug}`);
-            } else {
-                window.location.hash = `#news/${slug}`;
-            }
-            
-            // Call showNewsArticle directly (it's in scope)
-            await showNewsArticle(slug);
-        };
-        
         articleCard.innerHTML = `
             <div class="article-date">${article.date}</div>
             <h2 class="article-headline">${article.headline}</h2>
@@ -195,6 +186,55 @@ function showNewsList() {
             </div>
         `;
         
+        // Attach click handler after innerHTML is set
+        articleCard.addEventListener('click', async function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            
+            const slug = article.slug;
+            console.log('=== ARTICLE CARD CLICKED ===');
+            console.log('Slug:', slug);
+            console.log('Article object:', article);
+            
+            // Immediately hide news list and show article page
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('newsPage').classList.remove('active');
+            document.getElementById('newsArticlePage').classList.add('active');
+            console.log('Page visibility updated - newsPage hidden, newsArticlePage shown');
+            
+            try {
+                // Use History API for clean URLs
+                if (window.history && window.history.pushState) {
+                    const newUrl = `news/${slug}`;
+                    console.log('Pushing state to:', newUrl);
+                    window.history.pushState({page: 'news-article', slug: slug}, '', newUrl);
+                } else {
+                    console.log('Using hash fallback');
+                    window.location.hash = `#news/${slug}`;
+                }
+                
+                // Call showNewsArticle - use the function directly since it's in scope
+                console.log('About to call showNewsArticle with slug:', slug);
+                console.log('showNewsArticle type:', typeof showNewsArticle);
+                
+                if (typeof showNewsArticle === 'function') {
+                    await showNewsArticle(slug);
+                    console.log('showNewsArticle completed');
+                } else {
+                    console.error('showNewsArticle is not a function!', typeof showNewsArticle);
+                    // Try window version
+                    if (window.showNewsArticle && typeof window.showNewsArticle === 'function') {
+                        console.log('Trying window.showNewsArticle');
+                        await window.showNewsArticle(slug);
+                    }
+                }
+            } catch (error) {
+                console.error('Error in article click handler:', error);
+                console.error('Error stack:', error.stack);
+            }
+        });
+        
         newsContainer.appendChild(articleCard);
     });
     
@@ -203,47 +243,71 @@ function showNewsList() {
 
 // Show individual news article
 async function showNewsArticle(slug) {
-    console.log('showNewsArticle called with slug:', slug);
+    console.log('=== showNewsArticle CALLED ===');
+    console.log('Slug:', slug);
     
-    document.getElementById('mainContent').classList.add('hidden');
-    document.getElementById('newsPage').classList.remove('active');
-    document.getElementById('newsArticlePage').classList.add('active');
-    
-    const article = await loadNewsArticle(slug);
-    if (!article) {
-        console.error('Article not found:', slug);
-        // Article not found, show list instead
-        if (window.history && window.history.pushState) {
-            window.history.pushState({page: 'news'}, '', 'news');
-        } else {
-            window.location.hash = '#news';
-        }
-        if (window.showNewsList) {
-            window.showNewsList();
-        }
+    if (!slug) {
+        console.error('No slug provided to showNewsArticle');
         return;
     }
     
-    console.log('Article loaded:', article);
-    
-    const articleContainer = document.getElementById('newsArticleContent');
-    if (!articleContainer) {
-        console.error('Article container not found!');
-        return;
+    try {
+        // Ensure page visibility is correct
+        const mainContent = document.getElementById('mainContent');
+        const newsPage = document.getElementById('newsPage');
+        const newsArticlePage = document.getElementById('newsArticlePage');
+        
+        if (mainContent) mainContent.classList.add('hidden');
+        if (newsPage) newsPage.classList.remove('active');
+        if (newsArticlePage) newsArticlePage.classList.add('active');
+        
+        console.log('Page visibility set:');
+        console.log('- mainContent hidden:', mainContent?.classList.contains('hidden'));
+        console.log('- newsPage active:', newsPage?.classList.contains('active'));
+        console.log('- newsArticlePage active:', newsArticlePage?.classList.contains('active'));
+        
+        console.log('Loading article markdown file:', slug);
+        const article = await loadNewsArticle(slug);
+        
+        if (!article) {
+            console.error('Article not found or failed to load:', slug);
+            // Don't redirect - just show error message
+            const articleContainer = document.getElementById('newsArticleContent');
+            if (articleContainer) {
+                articleContainer.innerHTML = `
+                    <div class="article-back">
+                        <a href="news" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'news'}, '', 'news'); } else { window.location.hash = '#news'; } if(window.showNewsList) { window.showNewsList(); } return false;">← Back to News</a>
+                    </div>
+                    <p style="color: #C41E3A; padding: 48px; text-align: center;">Article not found. Please check the console for errors.</p>
+                `;
+            }
+            return;
+        }
+        
+        console.log('Article loaded successfully:', article);
+        
+        const articleContainer = document.getElementById('newsArticleContent');
+        if (!articleContainer) {
+            console.error('Article container not found!');
+            return;
+        }
+        
+        articleContainer.innerHTML = `
+            <div class="article-back">
+                <a href="news" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'news'}, '', 'news'); } else { window.location.hash = '#news'; } if(window.showNewsList) { window.showNewsList(); } return false;">← Back to News</a>
+            </div>
+            <div class="article-date">${article.date}</div>
+            <h1 class="article-headline-full">${article.headline}</h1>
+            <div class="article-body">
+                ${article.content.map(para => `<p>${para}</p>`).join('')}
+            </div>
+        `;
+        
+        window.scrollTo(0, 0);
+        console.log('Article displayed successfully');
+    } catch (error) {
+        console.error('Error in showNewsArticle:', error);
     }
-    
-    articleContainer.innerHTML = `
-        <div class="article-back">
-            <a href="news" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'news'}, '', 'news'); } else { window.location.hash = '#news'; } if(window.showNewsList) { window.showNewsList(); } return false;">← Back to News</a>
-        </div>
-        <div class="article-date">${article.date}</div>
-        <h1 class="article-headline-full">${article.headline}</h1>
-        <div class="article-body">
-            ${article.content.map(para => `<p>${para}</p>`).join('')}
-        </div>
-    `;
-    
-    window.scrollTo(0, 0);
 }
 
 // Make functions available globally (after they're defined)
