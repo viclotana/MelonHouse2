@@ -4,7 +4,7 @@
 
 let newsArticles = [];
 
-// Simple markdown parser (basic - handles frontmatter and paragraphs)
+// Markdown parser with frontmatter support
 function parseMarkdown(markdown) {
     const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
     const match = markdown.match(frontmatterRegex);
@@ -32,15 +32,27 @@ function parseMarkdown(markdown) {
         }
     });
     
-    // Parse content into paragraphs
-    const paragraphs = content
-        .split(/\n\n+/)
-        .map(p => p.trim())
-        .filter(p => p.length > 0);
+    // Parse markdown content to HTML using marked.js
+    let htmlContent = '';
+    if (typeof marked !== 'undefined') {
+        // Configure marked options
+        marked.setOptions({
+            breaks: true, // Convert \n to <br>
+            gfm: true // GitHub Flavored Markdown
+        });
+        htmlContent = marked.parse(content);
+    } else {
+        // Fallback: basic paragraph splitting if marked.js not loaded
+        const paragraphs = content
+            .split(/\n\n+/)
+            .map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`)
+            .filter(p => p.length > 0);
+        htmlContent = paragraphs.join('');
+    }
     
     return {
         ...metadata,
-        content: paragraphs
+        content: htmlContent // Now returns HTML string instead of array
     };
 }
 
@@ -372,12 +384,12 @@ async function showNewsArticle(slug) {
         
         articleContainer.innerHTML = `
             <div class="article-back">
-                <a href="news" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'news'}, '', 'news'); } else { window.location.hash = '#news'; } if(window.showNewsList) { window.showNewsList(); } return false;">← Back to News</a>
+                <a href="/news" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'news'}, '', '/news'); } else { window.location.hash = '#news'; } if(window.showNewsList) { window.showNewsList(); } return false;">← Back to News</a>
             </div>
             <div class="article-date">${article.date}</div>
             <h1 class="article-headline-full">${article.headline}</h1>
             <div class="article-body">
-                ${article.content.map(para => `<p>${para}</p>`).join('')}
+                ${article.content}
             </div>
         `;
         
