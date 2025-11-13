@@ -83,10 +83,19 @@ window.addEventListener('hashchange', function() {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle initial hash on page load
+    // Don't interfere with news routing - let news-loader.js handle it
+    // Only show home if we're truly at the root with no hash
+    const path = window.location.pathname;
     const hash = window.location.hash;
-    if (hash === '' || hash === '#') {
-        showHome();
+    
+    // Only show home if we're at root AND no hash AND path doesn't contain 'news'
+    if (hash === '' && !path.includes('news')) {
+        // Check if path is just root or index.html
+        const isRoot = path === '/' || path === '/index.html' || path.endsWith('/index.html');
+        if (isRoot) {
+            showHome();
+        }
     }
+    // Otherwise, let news-loader.js handle the routing
 });
 

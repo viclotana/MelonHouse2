@@ -124,13 +124,37 @@ async function initializeNews() {
     // Normalize path - handle both /news and /index.html/news and child routes
     let normalizedPath = path;
     
+    console.log('Raw pathname:', path);
+    
     // Handle different path formats:
     // - /news/slug
     // - /index.html/news/slug
+    // - index.html/news/slug (relative)
     // - /Melon/news/slug (if in a subdirectory)
-    // - news/slug (relative)
     
-    // Remove index.html from path
+    // Check if path contains index.html/news pattern
+    // Pattern: /index.html/news/slug or index.html/news/slug
+    const indexHtmlNewsMatch = path.match(/(?:^|\/)(index\.html\/news\/[^\/]+)/);
+    if (indexHtmlNewsMatch) {
+        // Extract the slug from index.html/news/slug
+        const fullMatch = indexHtmlNewsMatch[1];
+        const slugMatch = fullMatch.match(/news\/([^\/]+)/);
+        if (slugMatch) {
+            const slug = slugMatch[1];
+            console.log('Found article slug from index.html/news pattern:', slug);
+            await showNewsArticle(slug);
+            return; // Exit early, we've handled it
+        }
+    }
+    
+    // Check for /index.html/news (list page)
+    if (path.includes('index.html/news') && !path.match(/index\.html\/news\/[^\/]+/)) {
+        console.log('Found index.html/news (list page)');
+        showNewsList();
+        return; // Exit early
+    }
+    
+    // Remove index.html from path for further processing
     if (normalizedPath.includes('index.html')) {
         normalizedPath = normalizedPath.replace(/index\.html/g, '');
     }
