@@ -14,7 +14,7 @@ Lagos, Nigeria — 13th November 2025 — Melon House Production is thrilled to 
 
 Writer and Producer Gold Gerry said "We wanted to create a film that feels personal and epic at the same time."
 
-Led by [Onyinye Odokoro (Ijeoma)](https://www.instagram.com/onyinyeodokoro), [Kelvinmary Ndukwe (Daniel)](https://www.instagram.com/kelvinmary) and [MMesomachi Chilaka (Adanne)](https://www.instagram.com/p/C9dLZuegWuL/?igsh=dHV6MTZic3A0M3Zn), and a multigenerational cast bringing raw authenticity to every frame, Adanne marks Melon House Production's entry into the global filmmaking space.
+Led by [Onyinye Odokoro (Ijeoma)](https://www.instagram.com/onyinyeodokoro), [Kelvinmary Ndukwe (Daniel)](https://www.instagram.com/kelvinmary) and [Mmesomachi Chilaka (Adanne)](https://www.instagram.com/p/C9dLZuegWuL/?igsh=dHV6MTZic3A0M3Zn), and a multigenerational cast bringing raw authenticity to every frame, Adanne marks Melon House Production's entry into the global filmmaking space.
 
 ** About Melon House Production: **
 
