@@ -165,14 +165,25 @@ function showNewsList() {
     newsArticles.forEach(article => {
         const articleCard = document.createElement('div');
         articleCard.className = 'article-card';
-        articleCard.onclick = () => {
+        
+        // Store slug in data attribute for reference
+        articleCard.setAttribute('data-slug', article.slug);
+        
+        articleCard.onclick = async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const slug = article.slug;
+            console.log('Article clicked:', slug);
+            
             // Use History API for clean URLs
             if (window.history && window.history.pushState) {
-                window.history.pushState({page: 'news-article', slug: article.slug}, '', `news/${article.slug}`);
+                window.history.pushState({page: 'news-article', slug: slug}, '', `news/${slug}`);
             } else {
-                window.location.hash = `#news/${article.slug}`;
+                window.location.hash = `#news/${slug}`;
             }
-            showNewsArticle(article.slug);
+            
+            // Call showNewsArticle directly (it's in scope)
+            await showNewsArticle(slug);
         };
         
         articleCard.innerHTML = `
@@ -190,29 +201,40 @@ function showNewsList() {
     window.scrollTo(0, 0);
 }
 
-// Make functions available globally
-window.showNewsList = showNewsList;
-window.showNewsArticle = showNewsArticle;
-
 // Show individual news article
 async function showNewsArticle(slug) {
+    console.log('showNewsArticle called with slug:', slug);
+    
     document.getElementById('mainContent').classList.add('hidden');
     document.getElementById('newsPage').classList.remove('active');
     document.getElementById('newsArticlePage').classList.add('active');
     
     const article = await loadNewsArticle(slug);
     if (!article) {
+        console.error('Article not found:', slug);
         // Article not found, show list instead
-        window.location.hash = '#news';
+        if (window.history && window.history.pushState) {
+            window.history.pushState({page: 'news'}, '', 'news');
+        } else {
+            window.location.hash = '#news';
+        }
+        if (window.showNewsList) {
+            window.showNewsList();
+        }
         return;
     }
     
-    const articleContainer = document.getElementById('newsArticleContent');
-    if (!articleContainer) return;
+    console.log('Article loaded:', article);
     
-        articleContainer.innerHTML = `
+    const articleContainer = document.getElementById('newsArticleContent');
+    if (!articleContainer) {
+        console.error('Article container not found!');
+        return;
+    }
+    
+    articleContainer.innerHTML = `
         <div class="article-back">
-            <a href="news" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'news'}, '', 'news'); } else { window.location.hash = '#news'; } showNewsList(); return false;">← Back to News</a>
+            <a href="news" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'news'}, '', 'news'); } else { window.location.hash = '#news'; } if(window.showNewsList) { window.showNewsList(); } return false;">← Back to News</a>
         </div>
         <div class="article-date">${article.date}</div>
         <h1 class="article-headline-full">${article.headline}</h1>
@@ -223,6 +245,10 @@ async function showNewsArticle(slug) {
     
     window.scrollTo(0, 0);
 }
+
+// Make functions available globally (after they're defined)
+window.showNewsList = showNewsList;
+window.showNewsArticle = showNewsArticle;
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
