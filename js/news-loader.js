@@ -47,9 +47,36 @@ function parseMarkdown(markdown) {
 // Load a single news article
 async function loadNewsArticle(slug) {
     try {
-        const response = await fetch(`news/${slug}.md`);
+        // Use absolute path from root to avoid path issues
+        // If we're at /news/slug, we need to go back to root, then to news/
+        let newsPath = `news/${slug}.md`;
+        
+        // Check if we're in a subdirectory (like /news/slug)
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('/news/')) {
+            // We're in a news subdirectory, need to go up one level
+            newsPath = `../news/${slug}.md`;
+        } else if (currentPath.includes('/news')) {
+            // We're at /news, use relative path
+            newsPath = `news/${slug}.md`;
+        } else {
+            // We're at root, use relative path
+            newsPath = `news/${slug}.md`;
+        }
+        
+        console.log('Loading article from path:', newsPath);
+        const response = await fetch(newsPath);
         if (!response.ok) {
-            console.error(`Failed to load ${slug}.md: ${response.status} ${response.statusText}`);
+            console.error(`Failed to load ${slug}.md from ${newsPath}: ${response.status} ${response.statusText}`);
+            // Try alternative path
+            const altPath = `/news/${slug}.md`;
+            console.log('Trying alternative path:', altPath);
+            const altResponse = await fetch(altPath);
+            if (altResponse.ok) {
+                const markdown = await altResponse.text();
+                const parsed = parseMarkdown(markdown);
+                return parsed;
+            }
             return null;
         }
         const markdown = await response.text();
