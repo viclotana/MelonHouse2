@@ -47,30 +47,17 @@ function parseMarkdown(markdown) {
 // Load a single news article
 async function loadNewsArticle(slug) {
     try {
-        // Use absolute path from root to avoid path issues
-        // If we're at /news/slug, we need to go back to root, then to news/
-        let newsPath = `news/${slug}.md`;
+        // Always use absolute path from root to avoid path issues
+        // This ensures it works regardless of current URL path
+        const newsPath = `/news/${slug}.md`;
         
-        // Check if we're in a subdirectory (like /news/slug)
-        const currentPath = window.location.pathname;
-        if (currentPath.includes('/news/')) {
-            // We're in a news subdirectory, need to go up one level
-            newsPath = `../news/${slug}.md`;
-        } else if (currentPath.includes('/news')) {
-            // We're at /news, use relative path
-            newsPath = `news/${slug}.md`;
-        } else {
-            // We're at root, use relative path
-            newsPath = `news/${slug}.md`;
-        }
-        
-        console.log('Loading article from path:', newsPath);
+        console.log('Loading article from absolute path:', newsPath);
         const response = await fetch(newsPath);
         if (!response.ok) {
             console.error(`Failed to load ${slug}.md from ${newsPath}: ${response.status} ${response.statusText}`);
-            // Try alternative path
-            const altPath = `/news/${slug}.md`;
-            console.log('Trying alternative path:', altPath);
+            // Try relative path as fallback (for edge cases)
+            const altPath = `news/${slug}.md`;
+            console.log('Trying relative path fallback:', altPath);
             const altResponse = await fetch(altPath);
             if (altResponse.ok) {
                 const markdown = await altResponse.text();
@@ -273,7 +260,7 @@ function showNewsList() {
             try {
                 // Use History API for clean URLs
                 if (window.history && window.history.pushState) {
-                    const newUrl = `news/${slug}`;
+                    const newUrl = `/news/${slug}`;
                     console.log('Pushing state to:', newUrl);
                     window.history.pushState({page: 'news-article', slug: slug}, '', newUrl);
                 } else {
@@ -343,7 +330,7 @@ async function showNewsArticle(slug) {
             if (articleContainer) {
                 articleContainer.innerHTML = `
                     <div class="article-back">
-                        <a href="news" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'news'}, '', 'news'); } else { window.location.hash = '#news'; } if(window.showNewsList) { window.showNewsList(); } return false;">← Back to News</a>
+                        <a href="/news" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'news'}, '', '/news'); } else { window.location.hash = '#news'; } if(window.showNewsList) { window.showNewsList(); } return false;">← Back to News</a>
                     </div>
                     <p style="color: #C41E3A; padding: 48px; text-align: center;">Article not found. Please check the console for errors.</p>
                 `;

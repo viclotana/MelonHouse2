@@ -2,7 +2,7 @@
 function showNews() {
     // Use History API for clean URLs
     if (window.history && window.history.pushState) {
-        window.history.pushState({page: 'news'}, '', 'news');
+        window.history.pushState({page: 'news'}, '', '/news');
     } else {
         window.location.hash = '#news';
     }
