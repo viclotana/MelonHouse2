@@ -190,13 +190,17 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.4);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     opacity: 1;
     transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card:hover .project-overlay {
+    background: rgba(0, 0, 0, 0.6);
 }
 
 .project-card:hover .project-image {
@@ -493,6 +497,90 @@ body {
 /* Hide main content when showing news */
 .page-content.hidden {
     display: none;
+}
+
+/* Individual News Article Page */
+#newsArticlePage {
+    display: none;
+}
+
+#newsArticlePage.active {
+    display: block;
+}
+
+.news-article-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 120px 48px;
+}
+
+.article-back {
+    margin-bottom: 32px;
+}
+
+.back-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C41E3A;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.back-link:hover {
+    color: #FFFFFF;
+}
+
+.article-headline-full {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    margin-bottom: 24px;
+    line-height: 1.2;
+}
+
+.article-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #CCCCCC;
+}
+
+.article-body p {
+    margin-bottom: 24px;
+}
+
+.article-body p:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .news-article-container {
+        padding: 80px 24px;
+    }
+
+    .article-headline-full {
+        font-size: 40px;
+    }
+
+    .article-body {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .news-article-container {
+        padding: 64px 20px;
+    }
+
+    .article-headline-full {
+        font-size: 32px;
+    }
 }
 
 /* Responsive Breakpoints */
