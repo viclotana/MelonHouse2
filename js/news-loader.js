@@ -95,6 +95,7 @@ async function loadNewsArticle(slug) {
 async function loadAllNewsArticles() {
     // List of news article slugs (you can add more here as you create new MD files)
     const slugs = [
+        'adanne-wraps-photography-december-2025-press-release',
         'melon-house-production-adanne-press-release'
     ];
     
