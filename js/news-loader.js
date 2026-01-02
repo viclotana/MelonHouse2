@@ -107,10 +107,31 @@ async function loadAllNewsArticles() {
         }
     }
     
-    // Sort by date (newest first) - simple string comparison
+    // Sort by date (newest first) - parse dates properly for chronological sorting
     articles.sort((a, b) => {
-        // Convert date strings to comparable format (assuming "Month YYYY" format)
-        return b.date.localeCompare(a.date);
+        // Parse "Month YYYY" format to comparable date
+        function parseDate(dateStr) {
+            const monthNames = {
+                'january': 0, 'february': 1, 'march': 2, 'april': 3,
+                'may': 4, 'june': 5, 'july': 6, 'august': 7,
+                'september': 8, 'october': 9, 'november': 10, 'december': 11
+            };
+            
+            const parts = dateStr.toLowerCase().trim().split(/\s+/);
+            if (parts.length >= 2) {
+                const month = monthNames[parts[0]];
+                const year = parseInt(parts[1], 10);
+                if (month !== undefined && !isNaN(year)) {
+                    return new Date(year, month, 1).getTime();
+                }
+            }
+            // Fallback: return 0 if parsing fails
+            return 0;
+        }
+        
+        const dateA = parseDate(a.date);
+        const dateB = parseDate(b.date);
+        return dateB - dateA; // Newest first (larger timestamp comes first)
     });
     
     return articles;
