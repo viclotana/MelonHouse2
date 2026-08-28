@@ -50,9 +50,14 @@
     <!-- Navigation -->
     <nav class="nav">
         <div class="logo" onclick="showHome()">Melon House Production</div>
+        <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav').classList.toggle('nav-open')">
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+        </button>
         <div class="nav-links">
-            <a href="/blog" onclick="event.preventDefault(); showBlog(); return false;">Blog</a>
-            <a href="/press" onclick="event.preventDefault(); showPress(); return false;">Press</a>
+            <a href="/blog" onclick="event.preventDefault(); showBlog(); document.querySelector('.nav').classList.remove('nav-open'); return false;">Blog</a>
+            <a href="/press" onclick="event.preventDefault(); showPress(); document.querySelector('.nav').classList.remove('nav-open'); return false;">Press</a>
             <a href="mailto:hello@melonhouse.co?subject=Reaching%20out%20to%20the%20Melon%20House%20Team">Contact Us</a>
         </div>
     </nav>
@@ -80,17 +85,17 @@
             <h2 class="section-title">Projects</h2>
             <div class="projects-grid">
                 <div class="project-card">
-                    <img src="/images/art-not-fashion-2022.png" alt="Art Not Fashion (2022) - minimalist white background with black text" class="project-image">
+                    <img src="/images/bood-up-2022.png" alt="BOO'D UP (2022) - intimate bar scene with romantic lighting" class="project-image">
                     <div class="project-overlay">
-                        <h3 class="project-title">Art Not Fashion (2022)</h3>
+                        <h3 class="project-title">BOO'D UP (2022)</h3>
                         <p class="project-role">2022</p>
                     </div>
                 </div>
 
                 <div class="project-card">
-                    <img src="/images/bood-up-2022.png" alt="BOO'D UP (2022) - intimate bar scene with romantic lighting" class="project-image">
+                    <img src="/images/art-not-fashion-2022.png" alt="Art Not Fashion (2022) - minimalist white background with black text" class="project-image">
                     <div class="project-overlay">
-                        <h3 class="project-title">BOO'D UP (2022)</h3>
+                        <h3 class="project-title">Art Not Fashion (2022)</h3>
                         <p class="project-role">2022</p>
                     </div>
                 </div>

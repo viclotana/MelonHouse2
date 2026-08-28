@@ -93,6 +93,26 @@ body::before {
     width: 100%;
 }
 
+/* Hamburger Toggle (hidden on desktop) */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 1001;
+}
+
+.nav-toggle-bar {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #F5E6D3;
+    transition: all 0.3s ease;
+}
+
 /* Hero Section */
 .hero {
     height: 70vh;
@@ -143,8 +163,10 @@ body::before {
 .scroll-indicator {
     position: absolute;
     bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -874,6 +896,11 @@ body::before {
 @media (max-width: 768px) {
     .nav {
         padding: 16px 24px;
+        flex-wrap: wrap;
+    }
+
+    .nav-toggle {
+        display: flex;
     }
 
     .logo {
@@ -881,11 +908,38 @@ body::before {
     }
 
     .nav-links {
-        gap: 16px;
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+        padding-top: 20px;
+        order: 3;
+    }
+
+    .nav.nav-open .nav-links {
+        display: flex;
     }
 
     .nav-links a {
-        font-size: 14px;
+        font-size: 16px;
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(245, 230, 211, 0.1);
+    }
+
+    .nav-links a::after {
+        display: none;
+    }
+
+    .nav.nav-open .nav-toggle-bar:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .nav.nav-open .nav-toggle-bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav.nav-open .nav-toggle-bar:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
     }
 
     .hero {
@@ -1002,14 +1056,6 @@ body::before {
         letter-spacing: 0;
     }
 
-    .nav-links {
-        gap: 12px;
-    }
-
-    .nav-links a {
-        font-size: 12px;
-    }
-
     .hero {
         height: 55vh;
     }
@@ -1025,8 +1071,7 @@ body::before {
     }
 
     .scroll-indicator {
-        font-size: 12px;
-        letter-spacing: 1.5px;
+        bottom: 24px;
     }
 
     .projects-section,
