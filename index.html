@@ -50,9 +50,14 @@
     <!-- Navigation -->
     <nav class="nav">
         <div class="logo" onclick="showHome()">Melon House Production</div>
+        <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav').classList.toggle('nav-open')">
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+        </button>
         <div class="nav-links">
-            <a href="/blog" onclick="event.preventDefault(); showBlog(); return false;">Blog</a>
-            <a href="/press" onclick="event.preventDefault(); showPress(); return false;">Press</a>
+            <a href="/blog" onclick="event.preventDefault(); showBlog(); document.querySelector('.nav').classList.remove('nav-open'); return false;">Blog</a>
+            <a href="/press" onclick="event.preventDefault(); showPress(); document.querySelector('.nav').classList.remove('nav-open'); return false;">Press</a>
             <a href="mailto:hello@melonhouse.co?subject=Reaching%20out%20to%20the%20Melon%20House%20Team">Contact Us</a>
         </div>
     </nav>
