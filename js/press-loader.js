@@ -131,8 +131,10 @@ function goToSlide(index) {
     carouselIndex = index;
     slides[carouselIndex].classList.add('active');
     dots[carouselIndex].classList.add('active');
-    if (images[carouselIndex]) {
-        images[carouselIndex].style.display = 'block';
+
+    const imgIndex = carouselIndex % images.length;
+    if (images[imgIndex]) {
+        images[imgIndex].style.display = 'block';
     }
 
     resetCarousel();
