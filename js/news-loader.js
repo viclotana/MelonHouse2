@@ -1,8 +1,7 @@
-// News Loader - Reads markdown files from the news folder
+// Blog Loader - Reads markdown files from the blog folder
 // Each markdown file should have frontmatter with: date, headline, slug, preview
-// The slug is used for the URL: index.html#news/slug
 
-let newsArticles = [];
+let blogArticles = [];
 
 // Markdown parser with frontmatter support
 function parseMarkdown(markdown) {
@@ -16,14 +15,12 @@ function parseMarkdown(markdown) {
     const frontmatter = match[1];
     const content = match[2];
     
-    // Parse frontmatter
     const metadata = {};
     frontmatter.split('\n').forEach(line => {
         const colonIndex = line.indexOf(':');
         if (colonIndex > -1) {
             const key = line.substring(0, colonIndex).trim();
             let value = line.substring(colonIndex + 1).trim();
-            // Remove quotes if present
             if ((value.startsWith('"') && value.endsWith('"')) || 
                 (value.startsWith("'") && value.endsWith("'"))) {
                 value = value.slice(1, -1);
@@ -32,17 +29,14 @@ function parseMarkdown(markdown) {
         }
     });
     
-    // Parse markdown content to HTML using marked.js
     let htmlContent = '';
     if (typeof marked !== 'undefined') {
-        // Configure marked options
         marked.setOptions({
-            breaks: true, // Convert \n to <br>
-            gfm: true // GitHub Flavored Markdown
+            breaks: true,
+            gfm: true
         });
         htmlContent = marked.parse(content);
     } else {
-        // Fallback: basic paragraph splitting if marked.js not loaded
         const paragraphs = content
             .split(/\n\n+/)
             .map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`)
@@ -52,23 +46,19 @@ function parseMarkdown(markdown) {
     
     return {
         ...metadata,
-        content: htmlContent // Now returns HTML string instead of array
+        content: htmlContent
     };
 }
 
-// Load a single news article
-async function loadNewsArticle(slug) {
+async function loadBlogArticle(slug) {
     try {
-        // Always use absolute path from root to avoid path issues
-        // This ensures it works regardless of current URL path
-        const newsPath = `/news/${slug}.md`;
+        const blogPath = `/blog/${slug}.md`;
         
-        console.log('Loading article from absolute path:', newsPath);
-        const response = await fetch(newsPath);
+        console.log('Loading article from absolute path:', blogPath);
+        const response = await fetch(blogPath);
         if (!response.ok) {
-            console.error(`Failed to load ${slug}.md from ${newsPath}: ${response.status} ${response.statusText}`);
-            // Try relative path as fallback (for edge cases)
-            const altPath = `news/${slug}.md`;
+            console.error(`Failed to load ${slug}.md from ${blogPath}: ${response.status} ${response.statusText}`);
+            const altPath = `blog/${slug}.md`;
             console.log('Trying relative path fallback:', altPath);
             const altResponse = await fetch(altPath);
             if (altResponse.ok) {
@@ -85,15 +75,12 @@ async function loadNewsArticle(slug) {
         }
         return parsed;
     } catch (error) {
-        console.error(`Error loading news article ${slug}:`, error);
-        console.error('Note: If viewing locally, you may need to run a local server (e.g., python -m http.server)');
+        console.error(`Error loading blog article ${slug}:`, error);
         return null;
     }
 }
 
-// Load all news articles
-async function loadAllNewsArticles() {
-    // List of news article slugs (you can add more here as you create new MD files)
+async function loadAllBlogArticles() {
     const slugs = [
         'adanne-wraps-photography-december-2025-press-release',
         'melon-house-production-adanne-press-release'
@@ -101,15 +88,13 @@ async function loadAllNewsArticles() {
     
     const articles = [];
     for (const slug of slugs) {
-        const article = await loadNewsArticle(slug);
+        const article = await loadBlogArticle(slug);
         if (article) {
             articles.push(article);
         }
     }
     
-    // Sort by date (newest first) - parse dates properly for chronological sorting
     articles.sort((a, b) => {
-        // Parse "Month YYYY" format to comparable date
         function parseDate(dateStr) {
             const monthNames = {
                 'january': 0, 'february': 1, 'march': 2, 'april': 3,
@@ -125,83 +110,60 @@ async function loadAllNewsArticles() {
                     return new Date(year, month, 1).getTime();
                 }
             }
-            // Fallback: return 0 if parsing fails
             return 0;
         }
         
         const dateA = parseDate(a.date);
         const dateB = parseDate(b.date);
-        return dateB - dateA; // Newest first (larger timestamp comes first)
+        return dateB - dateA;
     });
     
     return articles;
 }
 
-// Initialize news system
-async function initializeNews() {
-    console.log('Initializing news system...');
-    newsArticles = await loadAllNewsArticles();
-    console.log(`Loaded ${newsArticles.length} news articles:`, newsArticles);
-    window.newsArticles = newsArticles; // Make available globally
+async function initializeBlog() {
+    console.log('Initializing blog system...');
+    blogArticles = await loadAllBlogArticles();
+    console.log(`Loaded ${blogArticles.length} blog articles:`, blogArticles);
+    window.blogArticles = blogArticles;
     
-    // Make sure functions are available before routing
-    window.showNewsList = showNewsList;
-    window.showNewsArticle = showNewsArticle;
+    window.showBlogList = showBlogList;
+    window.showBlogArticle = showBlogArticle;
     
-    // Check URL path for news routing
     const path = window.location.pathname;
     const hash = window.location.hash;
-    const fullPath = window.location.href;
     
-    console.log('Initial path:', path, 'hash:', hash, 'fullPath:', fullPath);
+    console.log('Initial path:', path, 'hash:', hash);
     
-    // Normalize path - handle both /news and /index.html/news and child routes
     let normalizedPath = path;
     
-    console.log('Raw pathname:', path);
-    
-    // Handle different path formats:
-    // - /news/slug
-    // - /index.html/news/slug
-    // - index.html/news/slug (relative)
-    // - /Melon/news/slug (if in a subdirectory)
-    
-    // Check if path contains index.html/news pattern
-    // Pattern: /index.html/news/slug or index.html/news/slug
-    const indexHtmlNewsMatch = path.match(/(?:^|\/)(index\.html\/news\/[^\/]+)/);
-    if (indexHtmlNewsMatch) {
-        // Extract the slug from index.html/news/slug
-        const fullMatch = indexHtmlNewsMatch[1];
-        const slugMatch = fullMatch.match(/news\/([^\/]+)/);
+    const indexHtmlBlogMatch = path.match(/(?:^|\/)(index\.html\/blog\/[^\/]+)/);
+    if (indexHtmlBlogMatch) {
+        const fullMatch = indexHtmlBlogMatch[1];
+        const slugMatch = fullMatch.match(/blog\/([^\/]+)/);
         if (slugMatch) {
             const slug = slugMatch[1];
-            console.log('Found article slug from index.html/news pattern:', slug);
-            await showNewsArticle(slug);
-            return; // Exit early, we've handled it
+            console.log('Found article slug from index.html/blog pattern:', slug);
+            await showBlogArticle(slug);
+            return;
         }
     }
     
-    // Check for /index.html/news (list page)
-    if (path.includes('index.html/news') && !path.match(/index\.html\/news\/[^\/]+/)) {
-        console.log('Found index.html/news (list page)');
-        showNewsList();
-        return; // Exit early
+    if (path.includes('index.html/blog') && !path.match(/index\.html\/blog\/[^\/]+/)) {
+        console.log('Found index.html/blog (list page)');
+        showBlogList();
+        return;
     }
     
-    // Remove index.html from path for further processing
     if (normalizedPath.includes('index.html')) {
         normalizedPath = normalizedPath.replace(/index\.html/g, '');
     }
     
-    // Remove trailing slash
     normalizedPath = normalizedPath.replace(/\/$/, '');
-    
-    // Remove leading slash for easier parsing
     normalizedPath = normalizedPath.replace(/^\//, '');
     
     console.log('Normalized path:', normalizedPath);
     
-    // Handle /press route
     if (normalizedPath === 'press') {
         console.log('Showing press page from path');
         if (window.showPressList) {
@@ -210,60 +172,48 @@ async function initializeNews() {
         return;
     }
 
-    // Handle clean URLs - check if path contains 'news'
-    if (normalizedPath.includes('news')) {
-        const pathParts = normalizedPath.split('/').filter(p => p && p !== 'index.html'); // Remove empty parts and index.html
+    if (normalizedPath.includes('blog')) {
+        const pathParts = normalizedPath.split('/').filter(p => p && p !== 'index.html');
         
-        console.log('Path parts after filtering:', pathParts);
+        const blogIndex = pathParts.indexOf('blog');
         
-        // Find the index of 'news' in the path
-        const newsIndex = pathParts.indexOf('news');
-        
-        if (newsIndex !== -1) {
-            // Check if there's a slug after 'news'
-            if (pathParts.length > newsIndex + 1) {
-                // There's a slug after 'news' - it's an article
-                const slug = pathParts[newsIndex + 1];
+        if (blogIndex !== -1) {
+            if (pathParts.length > blogIndex + 1) {
+                const slug = pathParts[blogIndex + 1];
                 console.log('Loading article from path, slug:', slug);
-                await showNewsArticle(slug);
+                await showBlogArticle(slug);
             } else {
-                // 'news' is the last part - it's the news list
-                console.log('Showing news list from path');
-                showNewsList();
+                console.log('Showing blog list from path');
+                showBlogList();
             }
         } else {
-            // 'news' not found in path parts, but was in normalizedPath - might be edge case
-            console.log('Edge case: news in path but not in parts, showing list');
-            showNewsList();
+            console.log('Edge case: blog in path but not in parts, showing list');
+            showBlogList();
         }
     } 
-    // Fallback to hash-based routing
-    else if (hash.startsWith('#news/')) {
-        const slug = hash.substring(6); // Remove '#news/'
+    else if (hash.startsWith('#blog/')) {
+        const slug = hash.substring(6);
         console.log('Loading article from hash:', slug);
-        await showNewsArticle(slug);
-    } else if (hash === '#news') {
-        console.log('Showing news list from hash');
-        showNewsList();
+        await showBlogArticle(slug);
+    } else if (hash === '#blog') {
+        console.log('Showing blog list from hash');
+        showBlogList();
     } else {
-        // Default: show home page
         console.log('Showing home page');
         document.getElementById('mainContent').classList.remove('hidden');
         document.getElementById('newsPage').classList.remove('active');
         document.getElementById('newsArticlePage').classList.remove('active');
     }
     
-    // Listen for hash changes (fallback)
     window.addEventListener('hashchange', () => {
         const hash = window.location.hash;
         console.log('Hash changed to:', hash);
-        if (hash.startsWith('#news/')) {
+        if (hash.startsWith('#blog/')) {
             const slug = hash.substring(6);
-            showNewsArticle(slug);
-        } else if (hash === '#news') {
-            showNewsList();
+            showBlogArticle(slug);
+        } else if (hash === '#blog') {
+            showBlogList();
         } else if (hash === '' || hash === '#') {
-            // Home page - handled by main.js
             document.getElementById('mainContent').classList.remove('hidden');
             document.getElementById('newsPage').classList.remove('active');
             document.getElementById('newsArticlePage').classList.remove('active');
@@ -271,33 +221,31 @@ async function initializeNews() {
     });
 }
 
-// Show news list
-function showNewsList() {
-    console.log('Showing news list, articles:', newsArticles);
+function showBlogList() {
+    console.log('Showing blog list, articles:', blogArticles);
     document.getElementById('mainContent').classList.add('hidden');
     document.getElementById('newsPage').classList.add('active');
     document.getElementById('newsArticlePage').classList.remove('active');
     var pressEl = document.getElementById('pressPage');
     if (pressEl) pressEl.classList.remove('active');
     
-    const newsContainer = document.getElementById('newsArticles');
-    if (!newsContainer) {
-        console.error('News container not found!');
+    const blogContainer = document.getElementById('newsArticles');
+    if (!blogContainer) {
+        console.error('Blog container not found!');
         return;
     }
     
-    newsContainer.innerHTML = '';
+    blogContainer.innerHTML = '';
     
-    if (newsArticles.length === 0) {
-        newsContainer.innerHTML = '<p style="color: #666; text-align: center; padding: 48px;">No news articles found. Please check the browser console for errors.</p>';
+    if (blogArticles.length === 0) {
+        blogContainer.innerHTML = '<p style="color: #666; text-align: center; padding: 48px;">No blog articles found. Please check the browser console for errors.</p>';
         return;
     }
     
-    newsArticles.forEach(article => {
+    blogArticles.forEach(article => {
         const articleCard = document.createElement('div');
         articleCard.className = 'article-card';
         
-        // Store slug in data attribute for reference
         articleCard.setAttribute('data-slug', article.slug);
         
         articleCard.innerHTML = `
@@ -309,73 +257,51 @@ function showNewsList() {
             </div>
         `;
         
-        // Attach click handler after innerHTML is set
         articleCard.addEventListener('click', async function(e) {
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
             
             const slug = article.slug;
-            console.log('=== ARTICLE CARD CLICKED ===');
-            console.log('Slug:', slug);
-            console.log('Article object:', article);
             
-            // Immediately hide news list and show article page
             document.getElementById('mainContent').classList.add('hidden');
             document.getElementById('newsPage').classList.remove('active');
             document.getElementById('newsArticlePage').classList.add('active');
-            console.log('Page visibility updated - newsPage hidden, newsArticlePage shown');
             
             try {
-                // Use History API for clean URLs
                 if (window.history && window.history.pushState) {
-                    const newUrl = `/news/${slug}`;
-                    console.log('Pushing state to:', newUrl);
-                    window.history.pushState({page: 'news-article', slug: slug}, '', newUrl);
+                    const newUrl = `/blog/${slug}`;
+                    window.history.pushState({page: 'blog-article', slug: slug}, '', newUrl);
                 } else {
-                    console.log('Using hash fallback');
-                    window.location.hash = `#news/${slug}`;
+                    window.location.hash = `#blog/${slug}`;
                 }
                 
-                // Call showNewsArticle - use the function directly since it's in scope
-                console.log('About to call showNewsArticle with slug:', slug);
-                console.log('showNewsArticle type:', typeof showNewsArticle);
-                
-                if (typeof showNewsArticle === 'function') {
-                    await showNewsArticle(slug);
-                    console.log('showNewsArticle completed');
-                } else {
-                    console.error('showNewsArticle is not a function!', typeof showNewsArticle);
-                    // Try window version
-                    if (window.showNewsArticle && typeof window.showNewsArticle === 'function') {
-                        console.log('Trying window.showNewsArticle');
-                        await window.showNewsArticle(slug);
-                    }
+                if (typeof showBlogArticle === 'function') {
+                    await showBlogArticle(slug);
+                } else if (window.showBlogArticle && typeof window.showBlogArticle === 'function') {
+                    await window.showBlogArticle(slug);
                 }
             } catch (error) {
                 console.error('Error in article click handler:', error);
-                console.error('Error stack:', error.stack);
             }
         });
         
-        newsContainer.appendChild(articleCard);
+        blogContainer.appendChild(articleCard);
     });
     
     window.scrollTo(0, 0);
 }
 
-// Show individual news article
-async function showNewsArticle(slug) {
-    console.log('=== showNewsArticle CALLED ===');
+async function showBlogArticle(slug) {
+    console.log('=== showBlogArticle CALLED ===');
     console.log('Slug:', slug);
     
     if (!slug) {
-        console.error('No slug provided to showNewsArticle');
+        console.error('No slug provided to showBlogArticle');
         return;
     }
     
     try {
-        // Ensure page visibility is correct
         const mainContent = document.getElementById('mainContent');
         const newsPage = document.getElementById('newsPage');
         const newsArticlePage = document.getElementById('newsArticlePage');
@@ -386,30 +312,21 @@ async function showNewsArticle(slug) {
         var pressEl = document.getElementById('pressPage');
         if (pressEl) pressEl.classList.remove('active');
         
-        console.log('Page visibility set:');
-        console.log('- mainContent hidden:', mainContent?.classList.contains('hidden'));
-        console.log('- newsPage active:', newsPage?.classList.contains('active'));
-        console.log('- newsArticlePage active:', newsArticlePage?.classList.contains('active'));
-        
-        console.log('Loading article markdown file:', slug);
-        const article = await loadNewsArticle(slug);
+        const article = await loadBlogArticle(slug);
         
         if (!article) {
             console.error('Article not found or failed to load:', slug);
-            // Don't redirect - just show error message
             const articleContainer = document.getElementById('newsArticleContent');
             if (articleContainer) {
                 articleContainer.innerHTML = `
                     <div class="article-back">
-                        <a href="/news" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'news'}, '', '/news'); } else { window.location.hash = '#news'; } if(window.showNewsList) { window.showNewsList(); } return false;">← Back to News</a>
+                        <a href="/blog" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'blog'}, '', '/blog'); } else { window.location.hash = '#blog'; } if(window.showBlogList) { window.showBlogList(); } return false;">← Back to Blog</a>
                     </div>
                     <p style="color: #C41E3A; padding: 48px; text-align: center;">Article not found. Please check the console for errors.</p>
                 `;
             }
             return;
         }
-        
-        console.log('Article loaded successfully:', article);
         
         const articleContainer = document.getElementById('newsArticleContent');
         if (!articleContainer) {
@@ -419,7 +336,7 @@ async function showNewsArticle(slug) {
         
         articleContainer.innerHTML = `
             <div class="article-back">
-                <a href="/news" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'news'}, '', '/news'); } else { window.location.hash = '#news'; } if(window.showNewsList) { window.showNewsList(); } return false;">← Back to News</a>
+                <a href="/blog" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'blog'}, '', '/blog'); } else { window.location.hash = '#blog'; } if(window.showBlogList) { window.showBlogList(); } return false;">← Back to Blog</a>
             </div>
             <div class="article-date">${article.date}</div>
             <h1 class="article-headline-full">${article.headline}</h1>
@@ -431,18 +348,15 @@ async function showNewsArticle(slug) {
         window.scrollTo(0, 0);
         console.log('Article displayed successfully');
     } catch (error) {
-        console.error('Error in showNewsArticle:', error);
+        console.error('Error in showBlogArticle:', error);
     }
 }
 
-// Make functions available globally (after they're defined)
-window.showNewsList = showNewsList;
-window.showNewsArticle = showNewsArticle;
+window.showBlogList = showBlogList;
+window.showBlogArticle = showBlogArticle;
 
-// Initialize when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeNews);
+    document.addEventListener('DOMContentLoaded', initializeBlog);
 } else {
-    initializeNews();
+    initializeBlog();
 }
-

@@ -122,13 +122,18 @@ function initCarousel() {
 function goToSlide(index) {
     const slides = document.querySelectorAll('.carousel-slide');
     const dots = document.querySelectorAll('.carousel-dot');
+    const images = document.querySelectorAll('.carousel-image');
 
     slides.forEach(s => s.classList.remove('active'));
     dots.forEach(d => d.classList.remove('active'));
+    images.forEach(img => img.style.display = 'none');
 
     carouselIndex = index;
     slides[carouselIndex].classList.add('active');
     dots[carouselIndex].classList.add('active');
+    if (images[carouselIndex]) {
+        images[carouselIndex].style.display = 'block';
+    }
 
     resetCarousel();
 }

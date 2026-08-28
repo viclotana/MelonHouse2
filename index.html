@@ -15,7 +15,7 @@
     <nav class="nav">
         <div class="logo" onclick="showHome()">Melon House Production</div>
         <div class="nav-links">
-            <a href="/news" onclick="event.preventDefault(); showNews(); return false;">News</a>
+            <a href="/blog" onclick="event.preventDefault(); showBlog(); return false;">Blog</a>
             <a href="/press" onclick="event.preventDefault(); showPress(); return false;">Press</a>
             <a href="mailto:hello@melonhouse.co?subject=Reaching%20out%20to%20the%20Melon%20House%20Team">Contact Us</a>
         </div>
@@ -69,7 +69,7 @@
         <!-- Press Carousel Section -->
         <section class="about-section press-carousel-section" id="pressCarousel">
             <div class="about-text carousel-text-container">
-                <h2 class="about-headline">Fresh Voices. One Vision.</h2>
+                <h2 class="about-headline">Reflecting cultures through storytelling</h2>
                 <div class="carousel-slide active" data-index="0">
                     <span class="carousel-source">The Nollywood Reporter</span>
                     <h3 class="carousel-title">Gold Gerry Unpacks Creative and Production Decisions Behind 'Adanne'</h3>
@@ -110,7 +110,12 @@
                 </div>
             </div>
             <div class="about-image-container">
-                <img src="/images/12 productions.webp" alt="Melon House Production on set" class="about-image carousel-image">
+                <img src="/images/img1.JPG" alt="Melon House Production" class="about-image carousel-image" data-index="0">
+                <img src="/images/img2.JPEG" alt="Melon House Production" class="about-image carousel-image" data-index="1" style="display:none;">
+                <img src="/images/img3.JPEG" alt="Melon House Production" class="about-image carousel-image" data-index="2" style="display:none;">
+                <img src="/images/img4.JPEG" alt="Melon House Production" class="about-image carousel-image" data-index="3" style="display:none;">
+                <img src="/images/img5.JPEG" alt="Melon House Production" class="about-image carousel-image" data-index="4" style="display:none;">
+                <img src="/images/img6.JPEG" alt="Melon House Production" class="about-image carousel-image" data-index="5" style="display:none;">
             </div>
         </section>
 
@@ -125,9 +130,9 @@
         </footer>
     </div>
 
-    <!-- News Page -->
+    <!-- Blog Page -->
     <div class="news-page" id="newsPage">
-        <h1 class="news-title">Latest News</h1>
+        <h1 class="news-title">Blog</h1>
         <div class="news-articles" id="newsArticles">
             <!-- News articles will be dynamically loaded here -->
         </div>
@@ -143,7 +148,7 @@
         </footer>
     </div>
 
-    <!-- Individual News Article Page -->
+    <!-- Individual Blog Article Page -->
     <div class="news-page" id="newsArticlePage">
         <div class="news-article-container" id="newsArticleContent">
             <!-- Individual article content will be loaded here -->

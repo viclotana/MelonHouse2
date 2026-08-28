@@ -1,12 +1,12 @@
 // Navigation Functions
-function showNews() {
+function showBlog() {
     if (window.history && window.history.pushState) {
-        window.history.pushState({page: 'news'}, '', '/news');
+        window.history.pushState({page: 'blog'}, '', '/blog');
     } else {
-        window.location.hash = '#news';
+        window.location.hash = '#blog';
     }
-    if (window.showNewsList) {
-        window.showNewsList();
+    if (window.showBlogList) {
+        window.showBlogList();
     }
 }
 
@@ -50,24 +50,24 @@ window.addEventListener('popstate', function(event) {
         if (window.showPressList) {
             window.showPressList();
         }
-    } else if (normalizedPath.includes('news')) {
+    } else if (normalizedPath.includes('blog')) {
         const pathParts = normalizedPath.split('/').filter(p => p && p !== 'index.html');
-        const newsIndex = pathParts.indexOf('news');
+        const blogIndex = pathParts.indexOf('blog');
 
-        if (newsIndex !== -1) {
-            if (pathParts.length > newsIndex + 1) {
-                const slug = pathParts[newsIndex + 1];
-                if (window.showNewsArticle) {
-                    window.showNewsArticle(slug);
+        if (blogIndex !== -1) {
+            if (pathParts.length > blogIndex + 1) {
+                const slug = pathParts[blogIndex + 1];
+                if (window.showBlogArticle) {
+                    window.showBlogArticle(slug);
                 }
             } else {
-                if (window.showNewsList) {
-                    window.showNewsList();
+                if (window.showBlogList) {
+                    window.showBlogList();
                 }
             }
         } else {
-            if (window.showNewsList) {
-                window.showNewsList();
+            if (window.showBlogList) {
+                window.showBlogList();
             }
         }
     } else {
@@ -84,10 +84,15 @@ window.addEventListener('hashchange', function() {
         if (window.showPressList) {
             window.showPressList();
         }
-    } else if (hash === '#news') {
-        // Handled by news-loader.js
-    } else if (hash.startsWith('#news/')) {
-        // Handled by news-loader.js
+    } else if (hash === '#blog') {
+        if (window.showBlogList) {
+            window.showBlogList();
+        }
+    } else if (hash.startsWith('#blog/')) {
+        const slug = hash.substring(6);
+        if (window.showBlogArticle) {
+            window.showBlogArticle(slug);
+        }
     }
 });
 
@@ -103,7 +108,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    if (hash === '' && !path.includes('news') && !path.includes('press')) {
+    if (hash === '#blog' || path.includes('/blog')) {
+        return;
+    }
+
+    if (hash === '' && !path.includes('blog') && !path.includes('press')) {
         const isRoot = path === '/' || path === '/index.html' || path.endsWith('/index.html');
         if (isRoot) {
             showHome();

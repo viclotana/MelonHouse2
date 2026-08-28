@@ -724,6 +724,10 @@ body {
     opacity: 1;
 }
 
+.carousel-image {
+    transition: opacity 0.5s ease-in-out;
+}
+
 .carousel-source {
     display: inline-block;
     background: #C41E3A;
