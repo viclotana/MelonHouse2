@@ -109,9 +109,11 @@ function initCarousel() {
         carouselSection.style.cursor = 'pointer';
         carouselSection.addEventListener('click', function (e) {
             if (e.target.classList.contains('carousel-dot')) return;
-            const article = pressArticles[carouselIndex];
-            if (article) {
-                window.open(article.url, '_blank', 'noopener,noreferrer');
+            if (window.showPressList) {
+                if (window.history && window.history.pushState) {
+                    window.history.pushState({page: 'press'}, '', '/press');
+                }
+                window.showPressList();
             }
         });
     }

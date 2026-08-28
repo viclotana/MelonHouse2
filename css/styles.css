@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'WonderType';
+    src: url('/fonts/WonderType-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -99,7 +107,7 @@ body {
 }
 
 .hero-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'WonderType', 'Playfair Display', serif;
     font-size: 96px;
     font-weight: 700;
     letter-spacing: -2px;
