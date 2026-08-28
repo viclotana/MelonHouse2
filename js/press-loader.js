@@ -51,6 +51,7 @@ const pressArticles = [
 
 // Render press mentions list page
 function showPressList() {
+    document.title = 'Press Mentions \u2014 Melon House Production';
     document.getElementById('mainContent').classList.add('hidden');
     document.getElementById('newsPage').classList.remove('active');
     document.getElementById('newsArticlePage').classList.remove('active');

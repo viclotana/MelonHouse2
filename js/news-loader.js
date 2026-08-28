@@ -223,6 +223,7 @@ async function initializeBlog() {
 
 function showBlogList() {
     console.log('Showing blog list, articles:', blogArticles);
+    document.title = 'Blog \u2014 Melon House Production';
     document.getElementById('mainContent').classList.add('hidden');
     document.getElementById('newsPage').classList.add('active');
     document.getElementById('newsArticlePage').classList.remove('active');
@@ -334,6 +335,7 @@ async function showBlogArticle(slug) {
             return;
         }
         
+        document.title = article.headline + ' \u2014 Melon House Production';
         articleContainer.innerHTML = `
             <div class="article-back">
                 <a href="/blog" class="back-link" onclick="event.preventDefault(); if(window.history && window.history.pushState) { window.history.pushState({page: 'blog'}, '', '/blog'); } else { window.location.hash = '#blog'; } if(window.showBlogList) { window.showBlogList(); } return false;">← Back to Blog</a>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://melonhouse.co/sitemap.xml

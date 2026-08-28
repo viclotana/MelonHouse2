@@ -27,6 +27,7 @@ function showHome() {
     } else {
         window.location.hash = '';
     }
+    document.title = 'Melon House Production \u2014 Independent Entertainment Company';
     document.getElementById('mainContent').classList.remove('hidden');
     document.getElementById('newsPage').classList.remove('active');
     document.getElementById('newsArticlePage').classList.remove('active');
