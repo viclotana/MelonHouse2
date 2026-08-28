@@ -201,6 +201,15 @@ async function initializeNews() {
     
     console.log('Normalized path:', normalizedPath);
     
+    // Handle /press route
+    if (normalizedPath === 'press') {
+        console.log('Showing press page from path');
+        if (window.showPressList) {
+            window.showPressList();
+        }
+        return;
+    }
+
     // Handle clean URLs - check if path contains 'news'
     if (normalizedPath.includes('news')) {
         const pathParts = normalizedPath.split('/').filter(p => p && p !== 'index.html'); // Remove empty parts and index.html
@@ -268,6 +277,8 @@ function showNewsList() {
     document.getElementById('mainContent').classList.add('hidden');
     document.getElementById('newsPage').classList.add('active');
     document.getElementById('newsArticlePage').classList.remove('active');
+    var pressEl = document.getElementById('pressPage');
+    if (pressEl) pressEl.classList.remove('active');
     
     const newsContainer = document.getElementById('newsArticles');
     if (!newsContainer) {
@@ -372,6 +383,8 @@ async function showNewsArticle(slug) {
         if (mainContent) mainContent.classList.add('hidden');
         if (newsPage) newsPage.classList.remove('active');
         if (newsArticlePage) newsArticlePage.classList.add('active');
+        var pressEl = document.getElementById('pressPage');
+        if (pressEl) pressEl.classList.remove('active');
         
         console.log('Page visibility set:');
         console.log('- mainContent hidden:', mainContent?.classList.contains('hidden'));

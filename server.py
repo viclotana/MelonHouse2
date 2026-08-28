@@ -19,14 +19,14 @@ class SPAHandler(http.server.SimpleHTTPRequestHandler):
         path = parsed_path.path
         
         # If it's a file that exists, serve it
-        if path != '/' and not path.startswith('/news') and not path.startswith('/index.html'):
+        if path != '/' and not path.startswith('/news') and not path.startswith('/press') and not path.startswith('/index.html'):
             try:
                 super().do_GET()
                 return
             except:
                 pass
         
-        # For all other routes (including /news/*), serve index.html
+        # For all other routes (including /news/*, /press), serve index.html
         self.path = '/index.html'
         return super().do_GET()
 
