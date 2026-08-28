@@ -1,0 +1,7 @@
+# Staging/dev environments
+staging-v2/
+server-dev1.py
+server-dev2.py
+
+# OS files
+.DS_Store
