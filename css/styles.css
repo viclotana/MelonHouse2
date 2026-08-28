@@ -112,6 +112,7 @@ body {
     font-weight: 700;
     letter-spacing: -2px;
     margin-bottom: 16px;
+    color: #D4AF37;
     opacity: 0;
     animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
 }
@@ -130,11 +131,12 @@ body {
     bottom: 32px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 14px;
-    letter-spacing: 2px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 4px;
     text-transform: uppercase;
     opacity: 0;
-    animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.9s forwards, bounce 2s ease-in-out 1.5s infinite;
+    animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.9s forwards, bounce 1.5s ease-in-out 1.5s infinite;
 }
 
 @keyframes fadeInUp {
@@ -151,9 +153,11 @@ body {
 @keyframes bounce {
     0%, 100% {
         transform: translateX(-50%) translateY(0);
+        opacity: 1;
     }
     50% {
-        transform: translateX(-50%) translateY(10px);
+        transform: translateX(-50%) translateY(18px);
+        opacity: 0.6;
     }
 }
 
