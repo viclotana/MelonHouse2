@@ -711,6 +711,13 @@ body::before {
     padding: 0;
 }
 
+.article-body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 32px 0;
+}
+
 @media (max-width: 768px) {
     .news-article-container {
         padding: 80px 24px;
