@@ -82,6 +82,7 @@ async function loadBlogArticle(slug) {
 
 async function loadAllBlogArticles() {
     const slugs = [
+        'adanne-official-poster-festival-selections',
         'adanne-wraps-photography-december-2025-press-release',
         'melon-house-production-adanne-press-release'
     ];
