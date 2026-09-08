@@ -1,5 +1,29 @@
 const pressArticles = [
     {
+        title: "Melon House-Produced 'Adanne' to Begin Festival Run with AAIFF Rwanda and Women of the Lens Festival London",
+        source: "What Kept Me Up",
+        date: "September 2026",
+        summary: "Melon House's debut feature Adanne, directed by Orobosa Ikponmwen, is set to begin its festival run with selections at the All African Independent Film Festival (AAIFF) in Kigali, Rwanda, and the Women of the Lens Festival in London. The official poster has also been unveiled alongside the festival announcements.",
+        url: "https://whatkeptmeup.com/nollywood-movies/melon-house-produced-adanne-to-begin-festival-run-with-aaiff-rwanda-and-women-of-the-lens-festival-london/",
+        slug: "whatkeptmeup-adanne-festival-run"
+    },
+    {
+        title: "Orobosa Ikponmwen's 'Adanne' Gets AAIFF and Women of the Lens Festival London Selection",
+        source: "Culture Custodian",
+        date: "September 2026",
+        summary: "Orobosa Ikponmwen's directorial feature-length debut, Adanne, has been selected for the All African Independent Film Festival (AAIFF) in Kigali, Rwanda, and the Women of the Lens Festival in London. The film examines how patterns of behaviour, belief, and survival pass through generations of women.",
+        url: "https://culturecustodian.com/orobosa-ikponmwens-adanne-gets-aaiff-and-women-of-the-lens-festival-london-selection/",
+        slug: "culturecustodian-adanne-festivals"
+    },
+    {
+        title: "Melon House Unveils Official Poster for Debut Feature Adanne",
+        source: "OYA Magazine",
+        date: "September 2026",
+        summary: "Melon House Production has revealed the official poster for its debut feature, Adanne. Director Orobosa Ikponmwen discusses the film's festival selections and the creative choices used to distinguish the story's three generations while showing the patterns connecting them.",
+        url: "https://www.oyamag.com/melon-house-unveils-official-poster-for-debut-feature-adanne/",
+        slug: "oyamag-adanne-poster"
+    },
+    {
         title: "Gold Gerry Unpacks Creative and Production Decisions Behind 'Adanne'",
         source: "The Nollywood Reporter",
         date: "March 2026",
