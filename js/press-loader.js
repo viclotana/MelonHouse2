@@ -1,5 +1,13 @@
 const pressArticles = [
     {
+        title: "Nigerian Family Drama Adanne, Released By Melon House Productions, Embarks On International Festival Run",
+        source: "The British Blacklist",
+        date: "September 2026",
+        summary: "Nigerian family drama Adanne, the debut feature from Melon House Productions, is set to begin its international festival run in the final quarter of 2026. The film tells the story of three generations of Nigerian women whose lives are bound by legacy, silence and the weight of expectation.",
+        url: "https://thebritishblacklist.co.uk/out-of-africa-nigerian-family-drama-adanne-released-by-melon-house-productions-embarks-on-international-festival-run/",
+        slug: "britishblacklist-adanne-festival-run"
+    },
+    {
         title: "Melon House-Produced 'Adanne' to Begin Festival Run with AAIFF Rwanda and Women of the Lens Festival London",
         source: "What Kept Me Up",
         date: "September 2026",
