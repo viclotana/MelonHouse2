@@ -711,11 +711,29 @@ body::before {
     padding: 0;
 }
 
-.article-body img {
+.article-body img,
+.article-body video {
     max-width: 100%;
     height: auto;
     display: block;
     margin: 32px 0;
+}
+
+.article-body video {
+    max-height: 70vh;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.article-body iframe {
+    max-width: 100%;
+}
+
+.article-body .twitter-tweet {
+    border-left: none;
+    padding-left: 0;
+    font-style: normal;
 }
 
 @media (max-width: 768px) {

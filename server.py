@@ -18,8 +18,8 @@ class SPAHandler(http.server.SimpleHTTPRequestHandler):
         parsed_path = urlparse(self.path)
         path = parsed_path.path
         
-        # If it's a file that exists, serve it
-        if path != '/' and not path.startswith('/blog') and not path.startswith('/press') and not path.startswith('/index.html'):
+        # If it's a file that exists (including .md blog files), serve it
+        if path != '/' and (path.endswith('.md') or (not path.startswith('/blog') and not path.startswith('/press') and not path.startswith('/index.html'))):
             try:
                 super().do_GET()
                 return

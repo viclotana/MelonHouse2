@@ -82,6 +82,7 @@ async function loadBlogArticle(slug) {
 
 async function loadAllBlogArticles() {
     const slugs = [
+        'afriff-2026-audience-choice-award-adanne',
         'adanne-official-poster-festival-selections',
         'adanne-wraps-photography-december-2025-press-release',
         'melon-house-production-adanne-press-release'
@@ -347,6 +348,19 @@ async function showBlogArticle(slug) {
                 ${article.content}
             </div>
         `;
+        
+        // Scripts injected via innerHTML don't execute, so load Twitter's widget script manually
+        if (articleContainer.querySelector('.twitter-tweet')) {
+            if (window.twttr && window.twttr.widgets) {
+                window.twttr.widgets.load(articleContainer);
+            } else if (!document.getElementById('twitter-wjs')) {
+                const s = document.createElement('script');
+                s.id = 'twitter-wjs';
+                s.async = true;
+                s.src = 'https://platform.twitter.com/widgets.js';
+                document.body.appendChild(s);
+            }
+        }
         
         window.scrollTo(0, 0);
         console.log('Article displayed successfully');
