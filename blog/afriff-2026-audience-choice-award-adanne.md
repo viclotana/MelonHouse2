@@ -23,8 +23,6 @@ Past winners include *Son of the Soil* (2025), Skepta's *Tribal Mark* (2024) and
 >
 > — **Gold Gerry**, writer and producer of Adanne
 
-The win was also covered by outlet and outlet.
-
 ## All AFRIFF 2026 Globe Award winners
 
 Adanne won the audience vote ahead of *If I Go Will They Miss Me* and *Which Way*. Here are all the AFRIFF 2026 Globe Award winners:
